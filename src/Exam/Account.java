@@ -17,32 +17,32 @@ public class Account {
         boolean isCustomerCodeValid = false;
         boolean isAccNumberValid = false;
         while (!isCustomerCodeValid) {
-            System.out.print("Enter customerCode: ");
+            System.out.print("Enter customer Code: ");
             String customerCodeInput = scanner.nextLine();
             if (customerCodeInput.length() != 5) {
-                System.out.println("customerCode must be 5 characters long");
+                System.out.println("customer Code must be 5 characters long");
                 continue;
             }
             isCustomerCodeValid = true;
             customerCode = customerCodeInput;
         }
-        System.out.print("Enter customerName: ");
+        System.out.print("Enter customer Name: ");
         customerName = scanner.nextLine();
         while (!isAccNumberValid) {
-            System.out.print("Enter accNumber: ");
+            System.out.print("Enter Account Number: ");
             String accNumberInput = scanner.nextLine();
             Pattern pattern = Pattern.compile("[0-9]+");
             Matcher matcher = pattern.matcher(accNumberInput);
             if (!matcher.matches()) {
-                System.out.println("accNumber must be a number");
+                System.out.println("Account Number must be a number");
                 continue;
             }
             if (accNumberInput.length() != 6) {
-                System.out.println("accNumber must be 6 digits");
+                System.out.println("Account Number must be 6 digits");
                 continue;
             }
-            if (!accNumberInput.startsWith("10")) {
-                System.out.println("accNumber must start with 100");
+            if (!accNumberInput.startsWith("100")) {
+                System.out.println("Account Number must start with 100");
                 continue;
             }
             isAccNumberValid = true;

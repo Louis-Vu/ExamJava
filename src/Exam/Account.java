@@ -1,89 +1,73 @@
 package Exam;
 
-import java.util.InputMismatchException;
+
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Account extends AccountManager {
+public class Account {
 
-    @Override
-    public void inputData() {
-        this.inputCustomerCode();
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter customer name: ");
-        this.setCustomerName(input.nextLine());
-        this.inputAccountNumber();
-        this.inputAmount();
+    private String customerCode;
+    private String customerName;
+    private int accNumber;
+    private long amount;
 
-
-        System.out.println("Successfully added");
-
-
-    }
-
-    private void inputCustomerCode() {
-        Scanner input = new Scanner(System.in);
-        String inputCustomerCode = input.nextLine();
-
-        while (true) {
-            System.out.print("Enter customer code: ");
-            if (inputCustomerCode.length() == 5) {
-                this.setCustomerCode(inputCustomerCode);
-                break;
-            } else {
-                System.out.println("Error, please enter customer code again");
+    public void input() {
+        Scanner scanner = new Scanner(System.in);
+        boolean isCustomerCodeValid = false;
+        boolean isAccNumberValid = false;
+        while (!isCustomerCodeValid) {
+            System.out.print("Enter customerCode: ");
+            String customerCodeInput = scanner.nextLine();
+            if (customerCodeInput.length() != 5) {
+                System.out.println("customerCode must be 5 characters long");
+                continue;
             }
+            isCustomerCodeValid = true;
+            customerCode = customerCodeInput;
         }
-
-
-
+        System.out.print("Enter customerName: ");
+        customerName = scanner.nextLine();
+        while (!isAccNumberValid) {
+            System.out.print("Enter accNumber: ");
+            String accNumberInput = scanner.nextLine();
+            Pattern pattern = Pattern.compile("[0-9]+");
+            Matcher matcher = pattern.matcher(accNumberInput);
+            if (!matcher.matches()) {
+                System.out.println("accNumber must be a number");
+                continue;
+            }
+            if (accNumberInput.length() != 6) {
+                System.out.println("accNumber must be 6 digits");
+                continue;
+            }
+            if (!accNumberInput.startsWith("10")) {
+                System.out.println("accNumber must start with 100");
+                continue;
+            }
+            isAccNumberValid = true;
+            accNumber = Integer.parseInt(accNumberInput);
+        }
     }
 
-    private void inputAccountNumber() {
-        Scanner input = new Scanner(System.in);
-        int inputNumber = 0;
-        do {
-            System.out.print("Enter amount: ");
-            try {
-                inputNumber = input.nextInt();
-                if (inputNumber <= 0) {
-                    System.out.println("Please enter a non-negative value for the account number");
-                }
-            } catch (InputMismatchException error) {
-                System.out.println("Error, please enter account number again");
-                input.next();
+    public void depositAndWithdraw(long amount, int type) {
+        if (type == 0) {
+            if (amount < 0) {
+                System.out.println("Amount must be a positive number");
+                return;
             }
-        } while (inputNumber <= 0);
-        this.setAccountNumber(inputNumber);
-
-    }
-
-    private void inputAmount() {
-        Scanner input = new Scanner(System.in);
-        long inputNumber = 0;
-        do {
-            System.out.print("Enter amount: ");
-            try {
-                inputNumber = input.nextLong();
-                if (inputNumber <= 0) {
-                    System.out.println("Please enter a non-negative value for the amount");
-                }
-            } catch (InputMismatchException error) {
-                System.out.println("Error, please enter amount again");
-                input.next();
-            }
-        } while (inputNumber <= 0);
-        this.setAmount(inputNumber);
+            this.amount += amount;
+            return;
+        }
+        if (amount > 0 && amount < this.amount) {
+            this.amount -= amount;
+            return;
+        }
+        System.out.println("Non-sufficient funds");
     }
 
     @Override
-    public void displayData() {
-
+    public String toString() {
+        return String.format("customerCode = %s customerName = %s accNumber = %d amount = %d", customerCode, customerName, accNumber, amount);
     }
-
-    @Override
-    public void depositAndWithdraw(long money, int type) {
-
-    }
-
-
 }

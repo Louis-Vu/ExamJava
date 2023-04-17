@@ -1,46 +1,21 @@
 package Exam;
 
+
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        AccountManager accountManager = null;
-        String Choose;
 
-        do {
-            mainMenu();
-            Choose = input.nextLine();
-            switch (Choose) {
-                case "1":
-                    System.out.println("1: Add Account");
-                    accountManager = new Account();
-                    accountManager.inputData();
-                    break;
-                case "2":
-                    System.out.println("2: Display");
-                    break;
-                case "3":
-                    System.out.println("3: Deposit or Withdraw");
-                    break;
-                case "4":
-                    System.out.println("4: Exit");
-                    break;
+        Scanner scanner = new Scanner(System.in);
 
-                default:
-                    System.out.println("Number is not available, please try again");
-                    break;
-            }
-        } while (!Choose.equals("4"));
-    }
-
-    private static void mainMenu() {
-        System.out.println("====");
-        System.out.println("====Menu====");
-        System.out.println("1. Add Account");
-        System.out.println("2. Display");
-        System.out.println("3. Deposit or Withdraw");
-        System.out.println("4. Exit");
-        System.out.print("Please choose [1 - 4]: ");
+        Account account = new Account();
+        account.input();
+        System.out.print("Deposit (0) or Withdraw (1): ");
+        int type = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter amount of money ($): ");
+        long amount = Integer.parseInt(scanner.nextLine());
+        account.depositAndWithdraw(amount, type);
+        System.out.println(account);
     }
 }
